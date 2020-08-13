@@ -1,0 +1,81 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #333333;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.grid-container {
+  margin: 0!important;
+  padding: .5rem!important;
+  height: 100%;
+  width: 100%!important;
+}
+
+.fit-content {
+  height: fit-content;
+}
+
+/* General */
+.MuiDialog-paperWidthSm {
+  width: 100%;
+}
+
+.paper-container-style {
+  margin: 40px auto;
+  width: 90%;
+}
+
+.button {
+  width: 100%;
+}
+
+.header-style {
+  padding: 1rem 1rem 0 1rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.title-style {
+  padding: .5rem 1rem!important;
+}
+
+/* Spinner */
+.small-spinner {
+  height: 24px!important;
+  width: 24px!important;
+}
+
+/* Forms */
+.form-container {
+  width: 100%!important;
+  min-width: 300px;
+  padding: 1rem;
+}
+
+.text-input {
+  width: 100%;
+  margin: 0 0 1rem 0!important;
+}
+
+@media (min-width: 768px) {
+  .button {
+    width: auto;
+  }
+
+  .text-input {
+    width: 100%;
+  }
+
+  .paper-container-style {
+    max-width: 500px;
+    margin: 30px auto;
+  }
+}
