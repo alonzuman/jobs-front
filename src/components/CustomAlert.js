@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { AlertContext } from '../contexts/Alert';
 import { Alert } from '@material-ui/lab'
 
-const CustomAlert = ({ isOn, type, msg }) => {
+const CustomAlert = () => {
+  const { alert, clearAlert } = useContext(AlertContext)
+  const { msg, isOn, type } = alert
+
   const alertContainerStyle = {
     width: '100%',
     backgroundColor: 'transparent',
@@ -10,11 +14,13 @@ const CustomAlert = ({ isOn, type, msg }) => {
     justifyContent: 'center',
     position: 'fixed',
     zIndex: 9999999,
-    bottom: '1rem'
+    bottom: '2rem',
+    minWidth: 180,
+    cursor: 'hover'
   }
 
   return (
-    <div style={alertContainerStyle}>
+    <div onClick={clearAlert} style={alertContainerStyle}>
       {isOn === true && <Alert severity={type}>{msg}</Alert>}
     </div>
   )

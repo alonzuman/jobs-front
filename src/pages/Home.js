@@ -12,6 +12,7 @@ import { Tabs, Tab } from '@material-ui/core'
 import UsersList from '../components/UsersList'
 import HomeMenu from '../components/HomeMenu'
 import { AuthContext } from '../contexts/Auth'
+import Settings from '../components/Settings'
 
 const Home = () => {
   const { userProfile } = useContext(AuthContext)
@@ -29,6 +30,7 @@ const Home = () => {
       {tabValue === 0 && <JobsList />}
       {tabValue === 1 && <UsersList />}
       <PostJob/>
+      {userProfile && <Settings />}
       {userProfile && <EditProfile  />}
     </>
   )

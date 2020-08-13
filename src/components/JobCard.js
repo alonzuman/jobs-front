@@ -21,7 +21,7 @@ const JobCard = ({ job }) => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button className='button'>
+        <Button color='primary' variant='outlined' className='button'>
           Contact
           </Button>
       </CardActions>

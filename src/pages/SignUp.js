@@ -3,7 +3,6 @@ import { Button, Typography, CircularProgress, Stepper, StepButton, Step, Paper 
 import { signUp } from '../firebase'
 import { Link, Redirect, withRouter } from 'react-router-dom'
 import { AuthContext } from '../contexts/Auth'
-import theme from '../theme'
 import EmailAndPassword from './ProfileFields/EmailAndPassword'
 import PersonalInformation from './ProfileFields/PersonalInformation'
 import { AlertContext } from '../contexts/Alert'
@@ -16,6 +15,7 @@ function getSteps() {
 
 const SignUp = () => {
   const { invalidInputAlert, setAlertFunction } = useContext(AlertContext)
+  const [isUploading, setIsUploading] = useState(false)
   const [completed, setCompleted] = useState({});
   const [activeStep, setActiveStep] = useState(0);
   const [avatar, setAvatar] = useState('')
@@ -29,7 +29,7 @@ const SignUp = () => {
   const [skills, setSkills] = useState([])
   const [loading, setLoading] = useState(false)
   const steps = getSteps();
-  const { currentUser } = useContext(AuthContext)
+  const { theme, currentUser } = useContext(AuthContext)
 
   const handleSubmit = async e => {
     e.preventDefault()
@@ -117,7 +117,7 @@ const SignUp = () => {
       <Stepper nonLinear activeStep={activeStep}>
         {steps.map((label, index) => (
           <Step key={label}>
-            <StepButton onClick={handleStep(index)} completed={completed[index]}>
+            <StepButton completed={completed[index]}>
               {label}
             </StepButton>
           </Step>
@@ -147,9 +147,11 @@ const SignUp = () => {
         skills={skills}
         setSkills={setSkills}
         setAvatar={setAvatar}
+        isUploading={isUploading}
+        setIsUploading={setIsUploading}
       />}
       {(completedSteps() === totalSteps() - 1) ?
-      <Button className='button' color='primary' variant='contained' onClick={handleSubmit}>
+      <Button disabled={isUploading} className='button' color='primary' variant='contained' onClick={handleSubmit}>
         {loading ? <CircularProgress color='primary.light' className='small-spinner' /> : 'Submit'}
       </Button>:
         <Button className='button' variant="contained" color="primary" onClick={handleComplete}>

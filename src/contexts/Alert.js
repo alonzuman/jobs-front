@@ -9,27 +9,36 @@ export const AlertProvider = ({ children }) => {
     type: ''
   })
 
+  const clearAlert = () => {
+    setAlert({
+      isOn: false,
+      msg: '',
+      type: ''
+    })
+  }
+
   const setAlertFunction = ({ isOn, type, msg }) => {
     setAlert({
       isOn,
       type,
       msg
     })
-    setTimeout(() => {
-      setAlert({
-        isOn: false,
-        msg: '',
-        type: ''
-      })
-    }, 3000);
+    setTimeout(() => clearAlert(), 3000);
   }
 
   const invalidInputAlert = (field) => {
     setAlertFunction({ isOn: true, msg: `Please fill ${field} field properly`, type: 'error' })
   }
 
+  const value = {
+    alert,
+    setAlertFunction,
+    invalidInputAlert,
+    clearAlert
+  }
+
   return (
-    <AlertContext.Provider value={{ alert, setAlertFunction, invalidInputAlert }}>
+    <AlertContext.Provider value={value}>
       {children}
     </AlertContext.Provider>
   )

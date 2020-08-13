@@ -15,7 +15,7 @@ const UserCard = ({ user }) => {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button className='button'>
+          <Button variant='outlined' color='primary' className='button'>
             Contact
           </Button>
         </CardActions>

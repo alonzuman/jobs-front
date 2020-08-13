@@ -1,6 +1,6 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import { AlertContext } from './contexts/Alert';
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 // Pages
 import Home from './pages/Home'
@@ -10,21 +10,28 @@ import SignUp from './pages/SignUp'
 // Components
 import PrivateRoute from './components/PrivateRoute';
 import CustomAlert from './components/CustomAlert';
+import { AuthContext } from './contexts/Auth';
+import { Paper } from '@material-ui/core';
 
 
 const AppRouter = () => {
-  const { alert } = useContext(AlertContext)
+  const { theme } = useContext(AuthContext)
   const { msg, type, isOn } = alert
+  const muiTheme = createMuiTheme(theme);
 
   return (
-    <Router>
-      {isOn && <CustomAlert isOn={true} msg={msg} type={type} />}
-      <Switch>
-        <PrivateRoute exact path='/' component={Home} />
-        <Route path='/signin' component={SignIn} />
-        <Route path='/signup' component={SignUp} />
-      </Switch>
-    </Router>
+    <MuiThemeProvider theme={muiTheme}>
+      <Router>
+        <CustomAlert />
+        <Switch>
+          <Paper className='background-paper'>
+            <PrivateRoute exact path='/' component={Home} />
+            <Route path='/signin' component={SignIn} />
+            <Route path='/signup' component={SignUp} />
+          </Paper>
+        </Switch>
+      </Router>
+    </MuiThemeProvider>
   )
 }
 

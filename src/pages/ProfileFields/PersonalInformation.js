@@ -3,9 +3,8 @@ import { TextField } from '@material-ui/core'
 import FileUploader from '../../components/FileUploader'
 import CircularProgressWithLabel from '../../components/CircularProgressWithLabel'
 
-const PersonalInformation = ({ email, setAvatar, firstName, setFirstName, lastName, setLastName, bio, setBio, skills, setSkills, phone, setPhone }) => {
+const PersonalInformation = ({ isUploading, setIsUploading, email, setAvatar, firstName, setFirstName, lastName, setLastName, bio, setBio, skills, setSkills, phone, setPhone }) => {
   const [progress, setProgress] = useState(0)
-  const [isUploading, setIsUploading] = useState(false)
 
   const flexStyle = {
     display: 'flex',

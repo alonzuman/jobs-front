@@ -74,19 +74,19 @@ const PostJob = () => {
       </div>
       <form onSubmit={handleSubmit} className='form-container' noValidate>
         {isUploading && <CircularProgressWithLabel value={progress} />}
-        <FileUploader
+        {!isUploading && <FileUploader
           folder={'job-images'}
           fileName={uuidv4()}
           setImageUrl={setImageUrl}
           setProgress={setProgress}
           setIsUploading={setIsUploading}
-        />
+        />}
         <TextField required variant='outlined' onChange={e => setTitle(e.target.value)} value={title} className='text-input' label='Company name' /><br />
         <TextField required variant='outlined' onChange={e => setDescription(e.target.value)} value={description} className='text-input' label='Description' /><br />
         <TextField required variant='outlined' onChange={e => setLocation(e.target.value)} value={location} className='text-input' label='Location' /><br />
         <TextField required variant='outlined' onChange={e => setContact(e.target.value)} value={contact} className='text-input' label='Contact' /><br />
         <TextField required variant='outlined' onChange={e => setRequirements(['hi', 'bye', 'guy'])} value={requirements} className='text-input' label='Requirements' /><br />
-        <Button className='button' type='submit' color='primary' variant='contained'>{loading ? <CircularProgress color='primary.light' className='small-input' /> : 'Submit'}</Button>
+        <Button disabled={isUploading} className='button' type='submit' color='primary' variant='contained'>{loading ? <CircularProgress color='primary.light' className='small-input' /> : 'Submit'}</Button>
       </form>
     </Dialog>
   )

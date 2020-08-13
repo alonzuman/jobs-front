@@ -4,10 +4,6 @@
   box-sizing: border-box;
 }
 
-body {
-  background-color: #333333;
-}
-
 input[type="file"] {
   display: none;
 }
@@ -24,6 +20,21 @@ input[type="file"] {
 }
 
 /* General */
+.background-paper {
+  border-radius: 0!important;
+  box-shadow: none!important;
+  height: 100%;
+  width: 100%;
+}
+
+.MuiSwitch-input {
+  left: 0!important;
+}
+
+.MuiDialogContent-root {
+  padding: 1rem!important;
+}
+
 .MuiSpeedDial-root {
   position: fixed;
   bottom: 1rem;

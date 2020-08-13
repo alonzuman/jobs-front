@@ -7,6 +7,7 @@ import { AlertContext } from '../contexts/Alert'
 import CloseIcon from '@material-ui/icons/Close';
 
 const EditProfile = () => {
+  const [isUploading, setIsUploading] = useState(false)
   const [loading, setLoading] = useState(false)
   const { editingProfile, setEditingProfile, userProfile, setUserProfile, currentUser } = useContext(AuthContext)
   const { setAlertFunction, invalidInputAlert } = useContext(AlertContext)
@@ -75,9 +76,11 @@ const EditProfile = () => {
           skills={skills}
           setSkills={setSkills}
           setAvatar={setAvatar}
+          isUploading={isUploading}
+          setIsUploading={setIsUploading}
         />
-        <Button className='button' onClick={e => handleSubmit(e)} variant='contained' color='primary'>
-          {loading ? <CircularProgress color='default' className='small-spinner' /> : 'Submit'}
+        <Button disabled={isUploading} className='button' onClick={e => handleSubmit(e)} variant='contained' color='primary'>
+          {loading ? <CircularProgress color='default' className='small-spinner' /> : 'Update'}
         </Button>
       </div>
     </Dialog>

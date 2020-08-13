@@ -7,19 +7,20 @@ import CloseIcon from '@material-ui/icons/Close';
 import SpeedDial from '@material-ui/lab/SpeedDial';
 import SpeedDialIcon from '@material-ui/lab/SpeedDialIcon';
 import SpeedDialAction from '@material-ui/lab/SpeedDialAction';
+import SettingsIcon from '@material-ui/icons/Settings';
 import { Avatar } from '@material-ui/core';
 import { AuthContext } from '../contexts/Auth';
 import { JobsContext } from '../contexts/Jobs';
 
 export default function HomeMenu() {
   const { setPosting } = useContext(JobsContext)
-  const { userProfile, setEditingProfile } = useContext(AuthContext)
+  const { userProfile, setEditingProfile, setOpenSettings } = useContext(AuthContext)
   const [open, setOpen] = useState(false);
 
   const actions = [
+    { icon: <Avatar src={userProfile.avatar} alt={userProfile?.firstName} />, name: 'Profile', handleClick: setEditingProfile },
     { icon: <AddIcon />, name: 'Add', handleClick: setPosting },
-    { icon: <Avatar src={userProfile.avatar} alt={userProfile?.firstName} />, name: 'Profile', handleClick: setEditingProfile }
-    // { icon: <FavoriteIcon />, name: 'Saved' },
+    { icon: <SettingsIcon />, handleClick: setOpenSettings, name: 'Settings' },
   ];
 
   const handleOpen = () => {

@@ -3,7 +3,6 @@ import { TextField, Button, Typography, CircularProgress, Paper } from '@materia
 import { signIn } from '../firebase'
 import { Link, withRouter, Redirect } from 'react-router-dom'
 import { AuthContext } from '../contexts/Auth'
-import theme from '../theme'
 import { AlertContext } from '../contexts/Alert'
 
 const SignIn = () => {
@@ -11,7 +10,7 @@ const SignIn = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
-  const { currentUser } = useContext(AuthContext)
+  const { theme, currentUser } = useContext(AuthContext)
 
   const handleSubmit = async e => {
     e.preventDefault()
