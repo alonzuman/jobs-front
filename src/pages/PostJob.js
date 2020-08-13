@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react'
 import { v4 as uuidv4 } from 'uuid';
-import { Dialog, TextField, Button, DialogTitle, CircularProgress, IconButton } from '@material-ui/core'
+import { Dialog, TextField, Button, DialogTitle, CircularProgress, IconButton, CardHeader, Typography } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close';
 import FileUploader from '../components/FileUploader';
 import CircularProgressWithLabel from '../components/CircularProgressWithLabel';
@@ -10,7 +10,7 @@ import { JobsContext } from '../contexts/Jobs';
 
 const PostJob = () => {
   const { posting, setPosting, addJobFunction } = useContext(JobsContext)
-  const { setAlertFunction } = useContext(AlertContext)
+  const { setAlertFunction, invalidInputAlert } = useContext(AlertContext)
   const { currentUser } = useContext(AuthContext)
   const [isUploading, setIsUploading] = useState(false)
   const [progress, setProgress] = useState(0)
@@ -24,6 +24,12 @@ const PostJob = () => {
 
   const handleSubmit = e => {
     e.preventDefault()
+    if (title.trim().length === 0) return invalidInputAlert('title')
+    if (description.trim().length === 0) return invalidInputAlert('description')
+    if (location.trim().length === 0) return invalidInputAlert('location')
+    if (contact.trim().length === 0) return invalidInputAlert('contact')
+    if (requirements.length === 0) return invalidInputAlert('requirements')
+
     const job = {
       title,
       description,
@@ -75,11 +81,11 @@ const PostJob = () => {
           setProgress={setProgress}
           setIsUploading={setIsUploading}
         />
-        <TextField variant='outlined' onChange={e => setTitle(e.target.value)} value={title} className='text-input' label='Company name' /><br />
-        <TextField variant='outlined' onChange={e => setDescription(e.target.value)} value={description} className='text-input' label='Description' /><br />
-        <TextField variant='outlined' onChange={e => setLocation(e.target.value)} value={location} className='text-input' label='Location' /><br />
-        <TextField variant='outlined' onChange={e => setContact(e.target.value)} value={contact} className='text-input' label='Contact' /><br />
-        <TextField variant='outlined' onChange={e => setRequirements(['hi', 'bye', 'guy'])} value={requirements} className='text-input' label='Requirements' /><br />
+        <TextField required variant='outlined' onChange={e => setTitle(e.target.value)} value={title} className='text-input' label='Company name' /><br />
+        <TextField required variant='outlined' onChange={e => setDescription(e.target.value)} value={description} className='text-input' label='Description' /><br />
+        <TextField required variant='outlined' onChange={e => setLocation(e.target.value)} value={location} className='text-input' label='Location' /><br />
+        <TextField required variant='outlined' onChange={e => setContact(e.target.value)} value={contact} className='text-input' label='Contact' /><br />
+        <TextField required variant='outlined' onChange={e => setRequirements(['hi', 'bye', 'guy'])} value={requirements} className='text-input' label='Requirements' /><br />
         <Button className='button' type='submit' color='primary' variant='contained'>{loading ? <CircularProgress color='primary.light' className='small-input' /> : 'Submit'}</Button>
       </form>
     </Dialog>

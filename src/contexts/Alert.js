@@ -24,8 +24,12 @@ export const AlertProvider = ({ children }) => {
     }, 3000);
   }
 
+  const invalidInputAlert = (field) => {
+    setAlertFunction({ isOn: true, msg: `Please fill ${field} field properly`, type: 'error' })
+  }
+
   return (
-    <AlertContext.Provider value={{ alert, setAlertFunction }}>
+    <AlertContext.Provider value={{ alert, setAlertFunction, invalidInputAlert }}>
       {children}
     </AlertContext.Provider>
   )

@@ -9,7 +9,7 @@ import CloseIcon from '@material-ui/icons/Close';
 const EditProfile = () => {
   const [loading, setLoading] = useState(false)
   const { editingProfile, setEditingProfile, userProfile, setUserProfile, currentUser } = useContext(AuthContext)
-  const { setAlertFunction } = useContext(AlertContext)
+  const { setAlertFunction, invalidInputAlert } = useContext(AlertContext)
   const { uid } = currentUser
   const [firstName, setFirstName] = useState(userProfile.firstName)
   const [lastName, setLastName] = useState(userProfile.lastName)
@@ -20,6 +20,12 @@ const EditProfile = () => {
 
   const handleSubmit = async e => {
     e.preventDefault()
+    if (firstName.trim().length === 0) return invalidInputAlert('title')
+    if (lastName.trim().length === 0) return invalidInputAlert('description')
+    if (phone.trim().length === 0) return invalidInputAlert('location')
+    if (bio.trim().length === 0) return invalidInputAlert('contact')
+    if (skills.length === 0) return invalidInputAlert('requirements')
+
     setLoading(true)
     const user = {
       firstName, lastName, phone, bio, skills, avatar

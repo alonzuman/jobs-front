@@ -6,6 +6,7 @@ import { AuthContext } from '../contexts/Auth'
 import theme from '../theme'
 import EmailAndPassword from './ProfileFields/EmailAndPassword'
 import PersonalInformation from './ProfileFields/PersonalInformation'
+import { AlertContext } from '../contexts/Alert'
 
 // Write down the steps
 function getSteps() {
@@ -14,6 +15,7 @@ function getSteps() {
 
 
 const SignUp = () => {
+  const { invalidInputAlert, setAlertFunction } = useContext(AlertContext)
   const [completed, setCompleted] = useState({});
   const [activeStep, setActiveStep] = useState(0);
   const [avatar, setAvatar] = useState('')
@@ -26,12 +28,16 @@ const SignUp = () => {
   const [bio, setBio] = useState('')
   const [skills, setSkills] = useState([])
   const [loading, setLoading] = useState(false)
-
   const steps = getSteps();
   const { currentUser } = useContext(AuthContext)
 
   const handleSubmit = async e => {
     e.preventDefault()
+    if (firstName.trim().length === 0) return invalidInputAlert('email')
+    if (lastName.trim().length === 0) return invalidInputAlert('password')
+    if (bio.trim().length === 0) return invalidInputAlert('bio')
+    if (phone.trim().length === 0) return invalidInputAlert('phone')
+    if (confirmPassword !== password) return setAlertFunction({ isOn: true, type: 'error', msg: 'Passwords dont match' })
     setLoading(true)
     const user = {
       email,
@@ -43,18 +49,16 @@ const SignUp = () => {
       avatar,
       phone
     }
-    if (password === confirmPassword) {
-      try {
-        signUp(user)
-      } catch (error) {
-        setLoading(false)
-        console.log(error)
-        // TODO set alert
-      }
-    } else {
-      // TODO set alert
+    try {
+      signUp(user)
+    } catch (error) {
       setLoading(false)
-      console.log('passwords dont match')
+      console.log(error)
+      setAlertFunction({
+        isOn: true,
+        msg: 'Failed to sign up, please try again',
+        type: 'error'
+      })
     }
   }
 
@@ -85,11 +89,8 @@ const SignUp = () => {
 
   const handleNext = () => {
     const newActiveStep =
-      isLastStep() && !allStepsCompleted()
-        ? // It's the last step, but not all steps have been completed,
-        // find the first step that has been completed
-        steps.findIndex((step, i) => !(i in completed))
-        : activeStep + 1;
+      isLastStep() && !allStepsCompleted() ?
+        steps.findIndex((step, i) => !(i in completed)) : activeStep + 1;
     setActiveStep(newActiveStep);
   };
 
@@ -98,6 +99,10 @@ const SignUp = () => {
   };
 
   const handleComplete = () => {
+    if (email.trim().length === 0) return invalidInputAlert('email')
+    if (password.trim().length === 0 || password.trim().length <= 5) return invalidInputAlert('password')
+    if (confirmPassword.trim().length === 0) return invalidInputAlert('')
+    if (confirmPassword !== password) return setAlertFunction({ isOn: true, type: 'error', msg: 'Passwords dont match' })
     const newCompleted = completed;
     newCompleted[activeStep] = true;
     setCompleted(newCompleted);
@@ -147,7 +152,7 @@ const SignUp = () => {
       <Button className='button' color='primary' variant='contained' onClick={handleSubmit}>
         {loading ? <CircularProgress color='primary.light' className='small-spinner' /> : 'Submit'}
       </Button>:
-      <Button className='button' variant="contained" color="primary" onClick={handleComplete}>
+        <Button className='button' variant="contained" color="primary" onClick={handleComplete}>
         Next
       </Button>}
       <br/>

@@ -9,7 +9,7 @@ const CustomAlert = ({ isOn, type, msg }) => {
     alignItems: 'center',
     justifyContent: 'center',
     position: 'fixed',
-    zIndex: 999,
+    zIndex: 9999999,
     bottom: '1rem'
   }
 
