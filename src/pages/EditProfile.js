@@ -16,7 +16,7 @@ const EditProfile = () => {
   const [phone, setPhone] = useState(userProfile.phone)
   const [bio, setBio] = useState(userProfile.bio)
   const [skills, setSkills] = useState(userProfile.skills)
-  const [avatar, setAvatar] = useState({})
+  const [avatar, setAvatar] = useState(userProfile.avatar)
 
   const handleSubmit = async e => {
     e.preventDefault()
