@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { TextField, Button, Typography, CircularProgress, Paper } from '@material-ui/core'
 import { signIn } from '../firebase'
-import { useHistory, Link, withRouter, Redirect } from 'react-router-dom'
+import { Link, withRouter, Redirect } from 'react-router-dom'
 import { AuthContext } from '../contexts/Auth'
 import theme from '../theme'
 import { AlertContext } from '../contexts/Alert'
@@ -27,7 +27,6 @@ const SignIn = () => {
       setLoading(false)
     } catch (error) {
       console.log(error)
-      // TODO switch case on error type
       setAlertFunction({
         isOn: true,
         msg: 'Failed to log in, please try again',
@@ -44,11 +43,6 @@ const SignIn = () => {
 
   if (currentUser) {
     return <Redirect to='/' />
-  }
-
-  const paperStyle = {
-    maxWidth: 500,
-    margin: '0 auto'
   }
 
   return (

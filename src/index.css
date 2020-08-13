@@ -24,6 +24,12 @@ input[type="file"] {
 }
 
 /* General */
+.MuiSpeedDial-root {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+}
+
 .MuiDialog-paperWidthSm {
   width: 100%;
 }

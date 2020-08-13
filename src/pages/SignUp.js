@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react'
-import { TextField, Button, Typography, CircularProgress, Stepper, StepButton, Step, Paper } from '@material-ui/core'
+import { Button, Typography, CircularProgress, Stepper, StepButton, Step, Paper } from '@material-ui/core'
 import { signUp } from '../firebase'
 import { Link, Redirect, withRouter } from 'react-router-dom'
 import { AuthContext } from '../contexts/Auth'

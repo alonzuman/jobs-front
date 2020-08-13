@@ -1,21 +1,20 @@
-import React, { useState, useEffect } from 'react'
-import { getJobs } from '../firebase'
+import React, { useState, useEffect, useContext } from 'react'
 import { Grid } from '@material-ui/core'
 import JobCard from './JobCard'
 import SkeletonCards from './SkeletonCards'
+import { JobsContext } from '../contexts/Jobs'
 
-const JobsList = ({ posting }) => {
-  const [jobs, setJobs] = useState([])
+const JobsList = () => {
+  const { jobs, getJobsFunction } = useContext(JobsContext)
   const [loading, setLoading] = useState(false)
 
-  const fetchJobs = async () => {
+  const fetchJobs = () => {
     setLoading(true)
-    const data = await getJobs()
-    setJobs(data)
+    getJobsFunction()
     setLoading(false)
   }
 
-  useEffect(() => { fetchJobs() }, [posting])
+  useEffect(() => { fetchJobs() }, [])
 
   return (
     <>

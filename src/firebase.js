@@ -18,52 +18,5 @@ export const storage = app.storage()
 export const db = app.firestore()
 export default app;
 
-// AUTH ACTIONS
-export const signIn = async (user) => {
-  const { email, password } = user
-  await app.auth().signInWithEmailAndPassword(email, password)
-}
-
-export const signUp = async (user) => {
-  const { email, password } = user
-  const res = await app.auth().createUserWithEmailAndPassword(email, password)
-  await db.collection('users').doc(res.user.uid).set({...user, role: 1})
-}
-
-export const signOut = () => {
-  app.auth().signOut()
-}
-
-export const getCurrentUser = async (id) => {
-  if (id) {
-    const user = await db.collection('users').doc(id).get()
-    return user.data()
-  }
-}
-
-export const editUser = async (user, id) => {
-  await db.collection('users').doc(id).set(user)
-}
-
-export const getUsers = async () => {
-  const snapshot = await db.collection('users').get()
-  let users = []
-  snapshot.forEach(doc => users.push(doc.data()))
-  return users
-}
-
-// JOB ACTIONS
-export const getJobs = async (job) => {
-  const snapshot = await db.collection('jobs').get()
-  let jobs = []
-  snapshot.forEach(doc => jobs.push({...doc.data(), id: doc.id }))
-  return jobs
-}
-
-export const postJob = (job) => {
-  db.collection('jobs').add(job)
-}
-
-export const deleteJob = (id) => {
-  db.collection('jobs').doc(id).delete()
-}
+export * from './controllers/users'
+export * from './controllers/jobs'

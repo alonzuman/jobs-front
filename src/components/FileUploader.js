@@ -1,6 +1,6 @@
 import React from 'react'
 import { storage } from '../firebase'
-import { Button, Typography } from '@material-ui/core'
+import { Button } from '@material-ui/core'
 import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 
 const FileUploader = ({ fileName, folder, setImageUrl, setProgress, setIsUploading }) => {

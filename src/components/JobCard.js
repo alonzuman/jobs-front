@@ -1,18 +1,19 @@
 import React, { useContext } from 'react'
-import { Card, CardHeader, Avatar, CardContent, Typography, CardActions, Button, Grid, ListItem } from '@material-ui/core'
+import { Card, CardHeader, Avatar, CardContent, Typography, CardActions, Button, Grid } from '@material-ui/core'
 import { AuthContext } from '../contexts/Auth'
-import { deleteJob } from '../firebase'
+import { JobsContext } from '../contexts/Jobs'
 
 const JobCard = ({ job }) => {
   const { currentUser } = useContext(AuthContext)
+  const { removeJobFunction } = useContext(JobsContext)
 
   return (
   <Grid xs={12} md={6} item>
       <Card className='card'>
       <CardHeader
-        avatar={<Avatar src={job.imageUrl || ''} alt={job.title} />}
+        avatar={<Avatar src={job?.imageUrl || ''} alt={job.title} />}
         title={job.title}
-        action={currentUser.uid === job.publisher && <Button onClick={() => deleteJob(job.id)}>Edit</Button>}
+        action={currentUser.uid === job.publisher && <Button onClick={() => removeJobFunction(job.id)}>Edit</Button>}
       />
       <CardContent>
         <Typography variant='body2'>

@@ -1,14 +1,15 @@
 import React, { useState, useContext } from 'react'
 import { v4 as uuidv4 } from 'uuid';
-import { Dialog, TextField, Button, DialogTitle, CircularProgress, IconButton, CardHeader, Typography } from '@material-ui/core'
+import { Dialog, TextField, Button, DialogTitle, CircularProgress, IconButton } from '@material-ui/core'
 import CloseIcon from '@material-ui/icons/Close';
-import { postJob } from '../firebase'
 import FileUploader from '../components/FileUploader';
 import CircularProgressWithLabel from '../components/CircularProgressWithLabel';
 import { AlertContext } from '../contexts/Alert';
 import { AuthContext } from '../contexts/Auth';
+import { JobsContext } from '../contexts/Jobs';
 
-const PostJob = ({ open, onClose }) => {
+const PostJob = () => {
+  const { posting, setPosting, addJobFunction } = useContext(JobsContext)
   const { setAlertFunction } = useContext(AlertContext)
   const { currentUser } = useContext(AuthContext)
   const [isUploading, setIsUploading] = useState(false)
@@ -23,7 +24,6 @@ const PostJob = ({ open, onClose }) => {
 
   const handleSubmit = e => {
     e.preventDefault()
-    // TODO fix the image url bug
     const job = {
       title,
       description,
@@ -32,12 +32,11 @@ const PostJob = ({ open, onClose }) => {
       requirements,
       imageUrl,
       publisher: currentUser.uid,
-      dateCreated: new Date
+      dateCreated: new Date()
     }
     setLoading(true)
     try {
-      postJob(job)
-      // TODO set alert
+      addJobFunction(job)
       setAlertFunction({
         isOn: true,
         msg: 'Job posted!',
@@ -49,19 +48,23 @@ const PostJob = ({ open, onClose }) => {
       setLocation('')
       setContact('')
       setRequirements([])
-      onClose(true)
+      setPosting(false)
     } catch (error) {
-      setLoading(false)
       console.log(error)
-      // TODO set alert
+      setLoading(false)
+      setAlertFunction({
+        isOn: true,
+        msg: 'Failed to post job, please try again',
+        type: 'error'
+      })
     }
   }
 
   return (
-    <Dialog open={open} onClose={onClose}>
+    <Dialog open={posting} onClose={() => setPosting(false)}>
       <div className='header-style'>
         <DialogTitle className='title-style'>Post a new job</DialogTitle>
-        <IconButton onClick={onClose}><CloseIcon /></IconButton>
+        <IconButton onClick={() => setPosting(false)}><CloseIcon /></IconButton>
       </div>
       <form onSubmit={handleSubmit} className='form-container' noValidate>
         {isUploading && <CircularProgressWithLabel value={progress} />}

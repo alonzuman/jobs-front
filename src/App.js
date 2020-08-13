@@ -5,8 +5,10 @@ import { AlertProvider } from './contexts/Alert';
 
 // Mui
 import theme from './theme';
-import { Paper, Container, ThemeProvider } from '@material-ui/core'
+import { ThemeProvider } from '@material-ui/core'
 import AppRouter from './AppRouter';
+import { JobsProvider } from './contexts/Jobs';
+import { UsersProvider } from './contexts/Users';
 
 
 
@@ -15,7 +17,11 @@ const App = () => {
     <ThemeProvider theme={theme}>
       <AuthProvider>
         <AlertProvider>
-          <AppRouter />
+          <JobsProvider>
+            <UsersProvider>
+              <AppRouter />
+            </UsersProvider>
+          </JobsProvider>
         </AlertProvider>
       </AuthProvider>
     </ThemeProvider>

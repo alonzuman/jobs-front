@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import { AlertProvider, AlertContext } from './contexts/Alert';
+import { AlertContext } from './contexts/Alert';
 
 // Pages
 import Home from './pages/Home'

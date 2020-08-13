@@ -1,17 +1,16 @@
-import React, { useState, useEffect } from 'react'
-import { getUsers } from '../firebase'
+import React, { useState, useEffect, useContext } from 'react'
 import { Grid } from '@material-ui/core'
 import UserCard from './UserCard'
 import SkeletonCards from './SkeletonCards'
+import { UsersContext } from '../contexts/Users'
 
 const UsersList = () => {
+  const { users, getUsersFunction } = useContext(UsersContext)
   const [loading, setLoading] = useState(false)
-  const [users, setUsers] = useState([])
 
-  const fetchUsers = async () => {
+  const fetchUsers = () => {
     setLoading(true)
-    const data = await getUsers()
-    setUsers(data)
+    getUsersFunction()
     setLoading(false)
   }
 

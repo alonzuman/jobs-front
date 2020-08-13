@@ -1,13 +1,14 @@
-import React, { useState, useContext, useReducer } from 'react'
+import React, { useState, useContext } from 'react'
 import PersonalInformation from './ProfileFields/PersonalInformation'
 import { AuthContext } from '../contexts/Auth'
-import { Button, CircularProgress } from '@material-ui/core'
+import { Button, CircularProgress, Dialog, DialogTitle, IconButton } from '@material-ui/core'
 import { editUser } from '../firebase'
 import { AlertContext } from '../contexts/Alert'
+import CloseIcon from '@material-ui/icons/Close';
 
-const EditProfile = ({ onClose }) => {
+const EditProfile = () => {
   const [loading, setLoading] = useState(false)
-  const { userProfile, setUserProfile, currentUser } = useContext(AuthContext)
+  const { editingProfile, setEditingProfile, userProfile, setUserProfile, currentUser } = useContext(AuthContext)
   const { setAlertFunction } = useContext(AlertContext)
   const { uid } = currentUser
   const [firstName, setFirstName] = useState(userProfile.firstName)
@@ -33,7 +34,7 @@ const EditProfile = ({ onClose }) => {
         type: 'success'
       })
       setLoading(false)
-      onClose(true)
+      setEditingProfile(false)
     } catch (error) {
       console.log(error)
       setAlertFunction({
@@ -45,25 +46,35 @@ const EditProfile = ({ onClose }) => {
   }
 
   return (
-    <div className='form-container'>
-      <PersonalInformation
-        email={currentUser.email}
-        firstName={firstName}
-        setFirstName={setFirstName}
-        lastName={lastName}
-        setLastName={setLastName}
-        phone={phone}
-        setPhone={setPhone}
-        bio={bio}
-        setBio={setBio}
-        skills={skills}
-        setSkills={setSkills}
-        setAvatar={setAvatar}
-      />
-      <Button className='button' onClick={e => handleSubmit(e)} variant='contained' color='primary'>
-        {loading ? <CircularProgress color='default' className='small-spinner' /> : 'Submit'}
-      </Button>
-    </div>
+    <Dialog open={editingProfile} onClose={() => setEditingProfile(false)}>
+      <div className='header-style'>
+        <DialogTitle className='title-style'>
+          Edit profile
+        </DialogTitle>
+        <IconButton onClick={() => setEditingProfile(false)}>
+          <CloseIcon />
+        </IconButton>
+      </div>
+      <div className='form-container'>
+        <PersonalInformation
+          email={currentUser.email}
+          firstName={firstName}
+          setFirstName={setFirstName}
+          lastName={lastName}
+          setLastName={setLastName}
+          phone={phone}
+          setPhone={setPhone}
+          bio={bio}
+          setBio={setBio}
+          skills={skills}
+          setSkills={setSkills}
+          setAvatar={setAvatar}
+        />
+        <Button className='button' onClick={e => handleSubmit(e)} variant='contained' color='primary'>
+          {loading ? <CircularProgress color='default' className='small-spinner' /> : 'Submit'}
+        </Button>
+      </div>
+    </Dialog>
   )
 }
 
