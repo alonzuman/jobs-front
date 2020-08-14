@@ -14,7 +14,8 @@ function getSteps() {
 
 
 const SignUp = () => {
-  const { invalidInputAlert, setAlertFunction } = useContext(AlertContext)
+  const { setAlert } = useContext(AlertContext)
+  const { theme, setIsSigningIn, currentUser } = useContext(AuthContext)
   const [isUploading, setIsUploading] = useState(false)
   const [completed, setCompleted] = useState({});
   const [activeStep, setActiveStep] = useState(0);
@@ -29,15 +30,14 @@ const SignUp = () => {
   const [skills, setSkills] = useState([])
   const [loading, setLoading] = useState(false)
   const steps = getSteps();
-  const { theme, currentUser } = useContext(AuthContext)
 
   const handleSubmit = async e => {
     e.preventDefault()
-    if (firstName.trim().length === 0) return invalidInputAlert('email')
-    if (lastName.trim().length === 0) return invalidInputAlert('password')
-    if (bio.trim().length === 0) return invalidInputAlert('bio')
-    if (phone.trim().length === 0) return invalidInputAlert('phone')
-    if (confirmPassword !== password) return setAlertFunction({ isOn: true, type: 'error', msg: 'Passwords dont match' })
+    if (firstName.trim().length === 0) return setAlert({ type: 'error', msg: 'Please fill all the required fields properly' })
+    if (lastName.trim().length === 0) return setAlert({ type: 'error', msg: 'Please fill all the required fields properly' })
+    if (bio.trim().length === 0) return setAlert({ type: 'error', msg: 'Please fill all the required fields properly' })
+    if (phone.trim().length === 0) return setAlert({ type: 'error', msg: 'Please fill all the required fields properly' })
+    if (confirmPassword !== password) return setAlert({ type: 'error', msg: 'Please fill all the required fields properly' })
     setLoading(true)
     const user = {
       email,
@@ -54,8 +54,7 @@ const SignUp = () => {
     } catch (error) {
       setLoading(false)
       console.log(error)
-      setAlertFunction({
-        isOn: true,
+      setAlert({
         msg: 'Failed to sign up, please try again',
         type: 'error'
       })
@@ -94,15 +93,11 @@ const SignUp = () => {
     setActiveStep(newActiveStep);
   };
 
-  const handleStep = (step) => () => {
-    setActiveStep(step);
-  };
-
   const handleComplete = () => {
-    if (email.trim().length === 0) return invalidInputAlert('email')
-    if (password.trim().length === 0 || password.trim().length <= 5) return invalidInputAlert('password')
-    if (confirmPassword.trim().length === 0) return invalidInputAlert('')
-    if (confirmPassword !== password) return setAlertFunction({ isOn: true, type: 'error', msg: 'Passwords dont match' })
+    if (email.trim().length === 0) return setAlert({ msg: 'Please fill all the required fields properly', type: 'error' })
+    if (password.trim().length === 0 || password.trim().length <= 5) return setAlert({ msg: 'Please fill all the required fields properly', type: 'error' })
+    if (confirmPassword.trim().length === 0) return setAlert({ msg: 'Please fill all the required fields properly', type: 'error' })
+    if (confirmPassword !== password) return setAlert({ msg: 'Please fill all the required fields properly', type: 'error' })
     const newCompleted = completed;
     newCompleted[activeStep] = true;
     setCompleted(newCompleted);
@@ -110,7 +105,6 @@ const SignUp = () => {
   };
 
   return (
-    <Paper className='paper-container-style'>
     <form className='form-container' noValidate>
       <Typography variant='h1'>Sign Up</Typography>
       <br />
@@ -159,9 +153,8 @@ const SignUp = () => {
       </Button>}
       <br/>
       <br/>
-      <Typography variant='body1'>Not signed up? <Link style={anchorStyle} to='/signin'>Sign in</Link></Typography>
+      <Typography variant='body1'>Not signed up? <span className='anchor-link' onClick={setIsSigningIn}>Sign in</span></Typography>
     </form>
-    </Paper>
   )
 }
 

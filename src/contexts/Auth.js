@@ -58,6 +58,10 @@ export const AuthProvider = ({ children }) => {
     dispatch({ type: 'SIGN_OUT' })
   }
 
+  const setIsSigningUp = () => dispatch({ type: 'SIGNING_UP'})
+  const setIsSigningIn = () => dispatch({ type: 'SIGNING_IN' })
+  const closeDialogues = () => dispatch({ type: 'CLOSE_DIALOGUES' })
+
   const toggleTheme = () => {
     let newPaletteType = theme.palette.type === 'light' ? 'dark' : 'light'
     localStorage.setItem('theme', theme.palette.type === 'light' ? 'dark' : 'light')
@@ -82,7 +86,10 @@ export const AuthProvider = ({ children }) => {
     setOpenSettings,
     // Actions
     updateUser,
-    logOut
+    logOut,
+    setIsSigningIn,
+    setIsSigningUp,
+    closeDialogues
   }
 
   return (

@@ -7,7 +7,7 @@ import { AlertContext } from '../contexts/Alert'
 
 const SignIn = () => {
   const { setAlert } = useContext(AlertContext)
-  const { authState, theme, currentUser } = useContext(AuthContext)
+  const { setIsSigningUp, authState, theme, currentUser } = useContext(AuthContext)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
@@ -38,24 +38,21 @@ const SignIn = () => {
     color: theme.palette.primary.main
   }
 
-
   if (currentUser && authState.isAuth) {
     return <Redirect to='/' />
   } else {
     return (
       <>
-        <Paper className='paper-container-style'>
-          <form className='form-container' noValidate>
-            <Typography variant='h1'>Sign In</Typography>
-            <br />
-            <TextField variant='outlined' className='text-input' label={`Email`} value={email} onChange={e => setEmail(e.target.value)} /><br />
-            <TextField variant='outlined' className='text-input' type='password' label={`Password`} value={password} onChange={e => setPassword(e.target.value)} /><br />
-            <Button className='button' color='primary' variant='contained' onClick={handleSubmit}>{loading ? <CircularProgress color='primary.light' className='small-spinner'/> : 'Submit' }</Button>
-            <br />
-            <br />
-            <Typography variant='body1'>Not signed up? <Link style={anchorStyle} to='/signup'>Sign up</Link></Typography>
-          </form>
-        </Paper>
+        <form className='form-container' noValidate>
+          <Typography variant='h1'>Sign In</Typography>
+          <br />
+          <TextField variant='outlined' className='text-input' label={`Email`} value={email} onChange={e => setEmail(e.target.value)} /><br />
+          <TextField variant='outlined' className='text-input' type='password' label={`Password`} value={password} onChange={e => setPassword(e.target.value)} /><br />
+          <Button className='button' color='primary' variant='contained' onClick={handleSubmit}>{loading ? <CircularProgress color='primary.light' className='small-spinner'/> : 'Submit' }</Button>
+          <br />
+          <br />
+          <Typography variant='body1'>Not signed up? <span onClick={setIsSigningUp}>Sign up</span></Typography>
+        </form>
       </>
     )
   }

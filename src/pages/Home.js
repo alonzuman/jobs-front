@@ -1,34 +1,55 @@
-import React, { useState, useContext } from 'react'
-import JobsList from '../components/JobsList'
-
-// Components
-import PostJob from './PostJob'
-import EditProfile from './EditProfile'
-
-// Mui
-import { Tabs, Tab } from '@material-ui/core'
-
-// Icons
-import UsersList from '../components/UsersList'
+import React, { useContext } from 'react'
 import HomeMenu from '../components/HomeMenu'
-import Settings from '../components/Settings'
+import { AuthContext } from '../contexts/Auth'
+import { Typography, Button, Box } from '@material-ui/core'
+import { Link, Redirect } from 'react-router-dom'
+import { JobsContext } from '../contexts/Jobs'
 
 const Home = () => {
-  const [tabValue, setTabValue] = useState(0)
-  const handleChange = (tab) => setTabValue(tab)
+  const { authState, setIsSigningIn } = useContext(AuthContext)
+  const { posting, setPosting } = useContext(JobsContext)
+
+  const handlePostJob = () => {
+    setPosting(true)
+  }
+
+  const handleFindJob = () => {
+    if (authState.isAuth) {
+      return <Redirect to='/results/jobs' />
+    } else {
+      console.log('opening sign up dialogue')
+    }
+  }
+
+  const containerStyle = {
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    minHeight: '85vh'
+  }
+
   return (
-    <>
-      <HomeMenu />
-      <Tabs centered variant='fullWidth' value={tabValue} indicatorColor="primary" textColor="primary" onChange={handleChange}>
-        <Tab onClick={() => setTabValue(0)} label="Jobs" />
-        <Tab onClick={() => setTabValue(1)} label="Members" />
-      </Tabs>
-      {tabValue === 0 && <JobsList />}
-      {tabValue === 1 && <UsersList />}
-      <PostJob/>
-      <Settings />
-      <EditProfile />
-    </>
+    <Box style={containerStyle}>
+      <Typography variant='h1'>A title for the page</Typography>
+      <br />
+      {!authState.isAuth &&
+      <Box>
+        <Button color='primary' variant='outlined' onClick={setIsSigningIn}>Find employees</Button>
+        <Button variant='outlined' onClick={setIsSigningIn}>Find a job</Button>
+      </Box>}
+
+      {authState.isAuth &&
+      <Box>
+        <Link style={{ textDecoration: 'none' }} to={'/results/employees'} >
+          <Button color='primary' variant='outlined'>Find employees</Button>
+        </Link>
+        <Link style={{ textDecoration: 'none' }} to={'/results/jobs'} >
+          <Button variant='outlined'>Find a job</Button>
+        </Link>
+      </Box>}
+      {authState.isAuth && <HomeMenu />}
+    </Box>
   )
 }
 

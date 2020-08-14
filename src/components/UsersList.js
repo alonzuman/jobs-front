@@ -3,6 +3,7 @@ import { Grid } from '@material-ui/core'
 import UserCard from './UserCard'
 import SkeletonCards from './SkeletonCards'
 import { UsersContext } from '../contexts/Users'
+import BackButton from './BackButton'
 
 const UsersList = () => {
   const { users, getUsersFunction } = useContext(UsersContext)
@@ -17,10 +18,13 @@ const UsersList = () => {
   useEffect(() => { fetchUsers() }, [])
 
   return (
-    <Grid className='grid-container' container spacing={2}>
-      {loading && <SkeletonCards />}
-      {!loading && users.map((user, index) => <UserCard key={index} user={user} />)}
-    </Grid>
+    <>
+      <BackButton />
+      <Grid className='grid-container' container spacing={2}>
+        {loading && <SkeletonCards />}
+        {!loading && users.map((user, index) => <UserCard key={index} user={user} />)}
+      </Grid>
+    </>
   )
 }
 

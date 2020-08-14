@@ -1,5 +1,7 @@
 export const initialState = {
   isAuth: false,
+  isSigningIn: false,
+  isSigningUp: false,
   avatar: '',
   firstName: '',
   lastName: '',
@@ -16,6 +18,24 @@ export const authReducer = (state, action) => {
       return {
         ...state,
         loading: true
+      }
+    case 'SIGNING_IN':
+      return {
+        ...state,
+        isSigningIn: true,
+        isSigningUp: false
+      }
+    case 'SIGNING_UP' :
+      return {
+        ...state,
+        isSigningUp: true,
+        isSigningIn: false,
+      }
+    case 'CLOSE_DIALOGUES':
+      return {
+        ...state,
+        isSigningUp: false,
+        isSigningIn: false
       }
     case 'SET_USER':
     case 'UPDATE_USER':

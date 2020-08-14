@@ -3,31 +3,37 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 // Pages
-import Home from './pages/Home'
+import Results from './pages/Results'
 import SignIn from './pages/SignIn'
 import SignUp from './pages/SignUp'
+import Home from './pages/Home';
 
 // Components
 import PrivateRoute from './components/PrivateRoute';
 import CustomAlert from './components/CustomAlert';
 import { AuthContext } from './contexts/Auth';
-import { Paper, Button } from '@material-ui/core';
-import { AlertContext } from './contexts/Alert';
+import { Paper } from '@material-ui/core';
+import MenuDialogues from './components/MenuDialogues';
+import AuthDialogues from './components/AuthDialogues';
+import JobsList from './components/JobsList';
+import UsersList from './components/UsersList';
 
 
 const AppRouter = () => {
-  const { theme } = useContext(AuthContext)
+  const { theme, authState } = useContext(AuthContext)
   const muiTheme = createMuiTheme(theme);
 
   return (
     <MuiThemeProvider theme={muiTheme}>
       <Router>
         <CustomAlert />
+        <AuthDialogues />
+        { authState.isAuth && <MenuDialogues /> }
         <Switch>
           <Paper className='background-paper'>
-            <PrivateRoute exact path='/' component={Home} />
-            <Route path='/signin' component={SignIn} />
-            <Route path='/signup' component={SignUp} />
+            <Route exact path ='/' component={Home} />
+            <Route exact path='/results/employees' component={UsersList} />
+            <Route exact path='/results/jobs' component={JobsList} />
           </Paper>
         </Switch>
       </Router>
