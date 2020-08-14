@@ -14,11 +14,11 @@ import { JobsContext } from '../contexts/Jobs';
 
 export default function HomeMenu() {
   const { setPosting } = useContext(JobsContext)
-  const { userProfile, setEditingProfile, setOpenSettings } = useContext(AuthContext)
+  const { authState, setEditingProfile, setOpenSettings } = useContext(AuthContext)
   const [open, setOpen] = useState(false);
 
   const actions = [
-    { icon: <Avatar src={userProfile.avatar} alt={userProfile?.firstName} />, name: 'Profile', handleClick: setEditingProfile },
+    { icon: <Avatar src={authState.avatar} alt={authState?.firstName} />, name: 'Profile', handleClick: setEditingProfile },
     { icon: <AddIcon />, name: 'Add', handleClick: setPosting },
     { icon: <SettingsIcon />, handleClick: setOpenSettings, name: 'Settings' },
   ];

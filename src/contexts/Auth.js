@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useReducer } from 'react'
 import app, { getCurrentUser } from '../firebase'
+import { authReducer, initialState } from '../reducers/auth'
+import { signOut } from '../controllers/users'
 
 export const AuthContext = React.createContext()
 
 export const AuthProvider = ({ children }) => {
+  const [state, dispatch] = useReducer(authReducer, initialState)
   const [currentUser, setCurrentUser] = useState(null)
   const [userProfile, setUserProfile] = useState(null)
   const [editingProfile, setEditingProfile] = useState(false)
@@ -22,18 +25,37 @@ export const AuthProvider = ({ children }) => {
     }
   })
 
-  useEffect(() => { validateUser() }, [currentUser?.uid])
+  useEffect(() => { setUser() }, [currentUser?.uid])
   useEffect(() => {
     document.querySelector('body').style.backgroundColor = theme.palette.type === 'dark' ? '#333333' : 'white'
     document.querySelector('.background-paper').style.backgroundColor = theme.palette.type === 'dark' ? '#333333' : 'white'
   })
 
-  const validateUser = async () => {
+  const setUser = async () => {
+    dispatch({ type: 'AUTH_LOADING' })
     await app.auth().onAuthStateChanged(setCurrentUser)
     if (currentUser?.uid) {
       const userData = await getCurrentUser(currentUser.uid)
-      setUserProfile(userData)
+      dispatch({ type: 'SET_USER', payload: { ...userData } })
     }
+  }
+
+  const updateUser = async (user) => {
+    dispatch({ type: 'AUTH_LOADING' })
+    try {
+      // Firebase stuff here
+      dispatch({
+        type: 'UPDATE_USER',
+        payload: { ...user }
+      })
+    } catch (error) {
+      // TODO error
+    }
+  }
+
+  const logOut = () => {
+    signOut()
+    dispatch({ type: 'SIGN_OUT' })
   }
 
   const toggleTheme = () => {
@@ -48,18 +70,19 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
-  // TODO move signin, signup, editprofile to here
 
   const value = {
+    authState: state,
     currentUser,
-    userProfile,
-    setUserProfile,
     editingProfile,
     setEditingProfile,
     theme,
     toggleTheme,
     openSettings,
-    setOpenSettings
+    setOpenSettings,
+    // Actions
+    updateUser,
+    logOut
   }
 
   return (

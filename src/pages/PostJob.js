@@ -10,7 +10,7 @@ import { JobsContext } from '../contexts/Jobs';
 
 const PostJob = () => {
   const { posting, setPosting, addJobFunction } = useContext(JobsContext)
-  const { setAlertFunction, invalidInputAlert } = useContext(AlertContext)
+  const { setAlert } = useContext(AlertContext)
   const { currentUser } = useContext(AuthContext)
   const [isUploading, setIsUploading] = useState(false)
   const [progress, setProgress] = useState(0)
@@ -24,11 +24,11 @@ const PostJob = () => {
 
   const handleSubmit = e => {
     e.preventDefault()
-    if (title.trim().length === 0) return invalidInputAlert('title')
-    if (description.trim().length === 0) return invalidInputAlert('description')
-    if (location.trim().length === 0) return invalidInputAlert('location')
-    if (contact.trim().length === 0) return invalidInputAlert('contact')
-    if (requirements.length === 0) return invalidInputAlert('requirements')
+    if (title.trim().length === 0) return setAlert({type: 'error', msg: 'Please fill all of the required fields properly.'})
+    if (description.trim().length === 0) return setAlert({type: 'error', msg: 'Please fill all of the required fields properly.'})
+    if (location.trim().length === 0) return setAlert({type: 'error', msg: 'Please fill all of the required fields properly.'})
+    if (contact.trim().length === 0) return setAlert({type: 'error', msg: 'Please fill all of the required fields properly.'})
+    if (requirements.length === 0) return setAlert({type: 'error', msg: 'Please fill all of the required fields properly.'})
 
     const job = {
       title,
@@ -43,7 +43,7 @@ const PostJob = () => {
     setLoading(true)
     try {
       addJobFunction(job)
-      setAlertFunction({
+      setAlert({
         isOn: true,
         msg: 'Job posted!',
         type: 'success'
@@ -58,7 +58,7 @@ const PostJob = () => {
     } catch (error) {
       console.log(error)
       setLoading(false)
-      setAlertFunction({
+      setAlert({
         isOn: true,
         msg: 'Failed to post job, please try again',
         type: 'error'

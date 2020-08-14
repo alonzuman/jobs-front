@@ -3,13 +3,14 @@ import { Dialog, DialogTitle, IconButton, DialogContent, Switch, FormControlLabe
 import { AuthContext } from '../contexts/Auth'
 import CloseIcon from '@material-ui/icons/Close'
 import Brightness4Icon from '@material-ui/icons/Brightness4';
-import { signOut } from '../controllers/users'
+import { Redirect } from 'react-router-dom';
 
 const Settings = () => {
-  const { theme, toggleTheme, openSettings, setOpenSettings } = useContext(AuthContext)
+  const { logOut, theme, toggleTheme, openSettings, setOpenSettings } = useContext(AuthContext)
   const handleSignOut = () => {
-    signOut()
+    logOut()
     setOpenSettings(false)
+    return <Redirect to='/signin' />
   }
 
   return (

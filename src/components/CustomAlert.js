@@ -16,7 +16,7 @@ const CustomAlert = () => {
     zIndex: 9999999,
     bottom: '2rem',
     minWidth: 180,
-    cursor: 'hover'
+    cursor: 'pointer'
   }
 
   return (

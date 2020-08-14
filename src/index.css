@@ -8,6 +8,14 @@ input[type="file"] {
   display: none;
 }
 
+.spinner-container {
+  margin-top: 120px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .grid-container {
   margin: 0!important;
   padding: .5rem!important;

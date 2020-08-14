@@ -1,39 +1,25 @@
-import React, { useState } from 'react'
+import React, { useReducer } from 'react'
+import { alertReducer, initialState } from '../reducers/alert'
 
 export const AlertContext = React.createContext()
 
 export const AlertProvider = ({ children }) => {
-  const [alert, setAlert] = useState({
-    isOn: false,
-    msg: '',
-    type: ''
-  })
+  const [state, dispatch] = useReducer(alertReducer, initialState)
 
-  const clearAlert = () => {
-    setAlert({
-      isOn: false,
-      msg: '',
-      type: ''
+  const clearAlert = () => dispatch({ type: 'CLEAR_ALERT' })
+  const setAlert = ({msg, type}) => {
+    dispatch({
+      type: 'SET_ALERT',
+      payload: {
+        msg, type
+      }
     })
-  }
-
-  const setAlertFunction = ({ isOn, type, msg }) => {
-    setAlert({
-      isOn,
-      type,
-      msg
-    })
-    setTimeout(() => clearAlert(), 3000);
-  }
-
-  const invalidInputAlert = (field) => {
-    setAlertFunction({ isOn: true, msg: `Please fill ${field} field properly`, type: 'error' })
+    setTimeout(() => clearAlert(), 3000)
   }
 
   const value = {
-    alert,
-    setAlertFunction,
-    invalidInputAlert,
+    alert: state,
+    setAlert,
     clearAlert
   }
 

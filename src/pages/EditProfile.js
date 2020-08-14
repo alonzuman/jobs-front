@@ -9,23 +9,23 @@ import CloseIcon from '@material-ui/icons/Close';
 const EditProfile = () => {
   const [isUploading, setIsUploading] = useState(false)
   const [loading, setLoading] = useState(false)
-  const { editingProfile, setEditingProfile, userProfile, setUserProfile, currentUser } = useContext(AuthContext)
-  const { setAlertFunction, invalidInputAlert } = useContext(AlertContext)
+  const { updateUser, editingProfile, setEditingProfile, authState, currentUser } = useContext(AuthContext)
+  const { setAlert } = useContext(AlertContext)
   const { uid } = currentUser
-  const [firstName, setFirstName] = useState(userProfile.firstName)
-  const [lastName, setLastName] = useState(userProfile.lastName)
-  const [phone, setPhone] = useState(userProfile.phone)
-  const [bio, setBio] = useState(userProfile.bio)
-  const [skills, setSkills] = useState(userProfile.skills)
-  const [avatar, setAvatar] = useState(userProfile.avatar)
+  const [firstName, setFirstName] = useState(authState?.firstName)
+  const [lastName, setLastName] = useState(authState?.lastName)
+  const [phone, setPhone] = useState(authState?.phone)
+  const [bio, setBio] = useState(authState?.bio)
+  const [skills, setSkills] = useState(authState?.skills)
+  const [avatar, setAvatar] = useState(authState?.avatar)
 
   const handleSubmit = async e => {
     e.preventDefault()
-    if (firstName.trim().length === 0) return invalidInputAlert('title')
-    if (lastName.trim().length === 0) return invalidInputAlert('description')
-    if (phone.trim().length === 0) return invalidInputAlert('location')
-    if (bio.trim().length === 0) return invalidInputAlert('contact')
-    if (skills.length === 0) return invalidInputAlert('requirements')
+    if (firstName.trim().length === 0) return setAlert({type: 'error', msg: 'Please fill all of the required fields properly.'})
+    if (lastName.trim().length === 0) return setAlert({type: 'error', msg: 'Please fill all of the required fields properly.'})
+    if (phone.trim().length === 0) return setAlert({type: 'error', msg: 'Please fill all of the required fields properly.'})
+    if (bio.trim().length === 0) return setAlert({type: 'error', msg: 'Please fill all of the required fields properly.'})
+    if (skills.length === 0) return setAlert({type: 'error', msg: 'Please fill all of the required fields properly.'})
 
     setLoading(true)
     const user = {
@@ -34,8 +34,8 @@ const EditProfile = () => {
 
     try {
       await editUser(user, uid)
-      setUserProfile(user)
-      setAlertFunction({
+      updateUser(user)
+      setAlert({
         isOn: true,
         msg: 'Profile updated successfully!',
         type: 'success'
@@ -44,7 +44,7 @@ const EditProfile = () => {
       setEditingProfile(false)
     } catch (error) {
       console.log(error)
-      setAlertFunction({
+      setAlert({
         isOn: true,
         msg: 'Failed to update profile, please try again',
         type: 'error'
@@ -64,7 +64,7 @@ const EditProfile = () => {
       </div>
       <div className='form-container'>
         <PersonalInformation
-          email={currentUser.email}
+          email={authState?.email}
           firstName={firstName}
           setFirstName={setFirstName}
           lastName={lastName}

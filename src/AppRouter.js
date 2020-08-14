@@ -11,12 +11,12 @@ import SignUp from './pages/SignUp'
 import PrivateRoute from './components/PrivateRoute';
 import CustomAlert from './components/CustomAlert';
 import { AuthContext } from './contexts/Auth';
-import { Paper } from '@material-ui/core';
+import { Paper, Button } from '@material-ui/core';
+import { AlertContext } from './contexts/Alert';
 
 
 const AppRouter = () => {
   const { theme } = useContext(AuthContext)
-  const { msg, type, isOn } = alert
   const muiTheme = createMuiTheme(theme);
 
   return (
