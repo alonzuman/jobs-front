@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './App.css';
+import AppRouter from './AppRouter';
 import { AuthProvider } from './contexts/Auth';
 import { AlertProvider } from './contexts/Alert';
-import AppRouter from './AppRouter';
 import { JobsProvider } from './contexts/Jobs';
 import { UsersProvider } from './contexts/Users';
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { DialoguesProvider } from './contexts/Dialogues';
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 
 const App = () => {
   return (

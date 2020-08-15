@@ -9,7 +9,7 @@ export const signIn = async (user) => {
 export const signUp = async (user) => {
   const { email, password } = user
   const res = await app.auth().createUserWithEmailAndPassword(email, password)
-  await db.collection('users').doc(res.user.uid).set({ ...user, role: 1 })
+  await db.collection('users').doc(res.user.uid).set({ ...user, role: 1, dateCreated: new Date() })
 }
 
 export const signOut = () => {

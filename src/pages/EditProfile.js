@@ -6,6 +6,7 @@ import { editUser } from '../firebase'
 import { AlertContext } from '../contexts/Alert'
 import CloseIcon from '@material-ui/icons/Close';
 import { DialoguesContext } from '../contexts/Dialogues'
+import SkillsPicker from './ProfileFields/SkillsPicker'
 
 const EditProfile = () => {
   const { editingProfile, setEditProfileDialog } = useContext(DialoguesContext)
@@ -20,6 +21,10 @@ const EditProfile = () => {
   const [bio, setBio] = useState(authState?.bio)
   const [skills, setSkills] = useState(authState?.skills)
   const [avatar, setAvatar] = useState(authState?.avatar)
+  const [location, setLocation] = useState(authState?.location)
+  const [serviceYear, setServiceYear] = useState(authState?.serviceYear)
+  const [pastJob, setPastJob] = useState(authState?.pastJob)
+
 
   const handleSubmit = async e => {
     e.preventDefault()
@@ -31,7 +36,7 @@ const EditProfile = () => {
 
     setLoading(true)
     const user = {
-      firstName, lastName, phone, bio, skills, avatar
+      firstName, lastName, phone, bio, skills, avatar, location, serviceYear, pastJob
     }
 
     try {
@@ -78,10 +83,17 @@ const EditProfile = () => {
           skills={skills}
           setSkills={setSkills}
           setAvatar={setAvatar}
+          location={location}
+          setLocation={setLocation}
+          serviceYear={serviceYear}
+          setServiceYear={setServiceYear}
+          pastJob={pastJob}
+          setPastJob={setPastJob}
           isUploading={isUploading}
           setIsUploading={setIsUploading}
         />
-        <Button disabled={isUploading} className='button' onClick={e => handleSubmit(e)} variant='contained' color='primary'>
+        <SkillsPicker skills={skills} setSkills={setSkills} />
+        <Button disabled={isUploading || skills.length === 0} className='button' onClick={e => handleSubmit(e)} variant='contained' color='primary'>
           {loading ? <CircularProgress color='default' className='small-spinner' /> : 'Update'}
         </Button>
       </div>

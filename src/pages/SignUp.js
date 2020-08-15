@@ -6,30 +6,42 @@ import { AuthContext } from '../contexts/Auth'
 import EmailAndPassword from './ProfileFields/EmailAndPassword'
 import PersonalInformation from './ProfileFields/PersonalInformation'
 import { AlertContext } from '../contexts/Alert'
+import SkillsPicker from './ProfileFields/SkillsPicker'
 
 // Write down the steps
 function getSteps() {
-  return ['Credentials', 'Personal Details'];
+  return ['Credentials', 'Personal Details', 'Pick your skills'];
 }
 
 
 const SignUp = () => {
   const { setAlert } = useContext(AlertContext)
-  const { theme, setIsSigningIn, currentUser } = useContext(AuthContext)
+  const { setIsSigningIn, currentUser } = useContext(AuthContext)
+
+  // Form state
   const [isUploading, setIsUploading] = useState(false)
   const [completed, setCompleted] = useState({});
   const [activeStep, setActiveStep] = useState(0);
-  const [avatar, setAvatar] = useState('')
+  const steps = getSteps();
+
+  // Credentials
   const [email, setEmail] = useState('')
-  const [phone, setPhone] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
+
+  // Personal info fields
+  const [avatar, setAvatar] = useState('')
+  const [phone, setPhone] = useState('')
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
+  const [serviceYear, setServiceYear] = useState('')
+
+  // Business info
   const [bio, setBio] = useState('')
   const [skills, setSkills] = useState([])
+  const [location, setLocation] = useState('')
+  const [pastJob, setPastJob] = useState('')
   const [loading, setLoading] = useState(false)
-  const steps = getSteps();
 
   const handleSubmit = async e => {
     e.preventDefault()
@@ -38,6 +50,7 @@ const SignUp = () => {
     if (bio.trim().length === 0) return setAlert({ type: 'error', msg: 'Please fill all the required fields properly' })
     if (phone.trim().length === 0) return setAlert({ type: 'error', msg: 'Please fill all the required fields properly' })
     if (confirmPassword !== password) return setAlert({ type: 'error', msg: 'Please fill all the required fields properly' })
+
     setLoading(true)
     const user = {
       email,
@@ -47,7 +60,10 @@ const SignUp = () => {
       bio,
       skills,
       avatar,
-      phone
+      phone,
+      location,
+      serviceYear,
+      pastJob,
     }
     try {
       signUp(user)
@@ -63,11 +79,6 @@ const SignUp = () => {
 
   if (currentUser) {
     return <Redirect to='/' />
-  }
-
-  const anchorStyle = {
-    textDecoration: 'none',
-    color: theme.palette.primary.main
   }
 
   const totalSteps = () => {
@@ -141,11 +152,18 @@ const SignUp = () => {
         skills={skills}
         setSkills={setSkills}
         setAvatar={setAvatar}
+        location={location}
+        setLocation={setLocation}
+        serviceYear={serviceYear}
+        setServiceYear={setServiceYear}
+        pastJob={pastJob}
+        setPastJob={setPastJob}
         isUploading={isUploading}
         setIsUploading={setIsUploading}
       />}
+      {activeStep === 2 && <SkillsPicker skills={skills} setSkills={setSkills} />}
       {(completedSteps() === totalSteps() - 1) ?
-      <Button disabled={isUploading} className='button' color='primary' variant='contained' onClick={handleSubmit}>
+      <Button disabled={isUploading || skills.length <= 2} className='button' color='primary' variant='contained' onClick={handleSubmit}>
         {loading ? <CircularProgress color='primary.light' className='small-spinner' /> : 'Submit'}
       </Button>:
         <Button className='button' variant="contained" color="primary" onClick={handleComplete}>

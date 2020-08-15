@@ -20,6 +20,9 @@ const JobsList = () => {
   return (
     <>
       <BackButton />
+      <br />
+      <br />
+      <br />
       <Grid className='grid-container' container spacing={2}>
         {loading && <SkeletonCards />}
         {!loading && jobs.map((job, index) => <JobCard key={index} job={job} />)}

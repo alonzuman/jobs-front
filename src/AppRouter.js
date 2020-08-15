@@ -17,6 +17,7 @@ import MenuDialogues from './components/MenuDialogues';
 import AuthDialogues from './components/AuthDialogues';
 import JobsList from './components/JobsList';
 import UsersList from './components/UsersList';
+import SkillsPicker from './pages/ProfileFields/SkillsPicker';
 
 
 const AppRouter = () => {
@@ -31,6 +32,7 @@ const AppRouter = () => {
         { authState.isAuth && <MenuDialogues /> }
         <Switch>
           <Paper className='background-paper'>
+            <Route exact path ='/skills-picker' component={SkillsPicker} />
             <Route exact path ='/' component={Home} />
             <Route exact path='/results/employees' component={UsersList} />
             <Route exact path='/results/jobs' component={JobsList} />
