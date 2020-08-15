@@ -11,16 +11,18 @@ import SettingsIcon from '@material-ui/icons/Settings';
 import { Avatar } from '@material-ui/core';
 import { AuthContext } from '../contexts/Auth';
 import { JobsContext } from '../contexts/Jobs';
+import { DialoguesContext } from '../contexts/Dialogues';
 
 export default function HomeMenu() {
+  const { setEditProfileDialog, setOpenSettingsDialog, setPostingJobDialog } = useContext(DialoguesContext)
   const { setPosting } = useContext(JobsContext)
-  const { authState, setEditingProfile, setOpenSettings } = useContext(AuthContext)
+  const { authState } = useContext(AuthContext)
   const [open, setOpen] = useState(false);
 
   const actions = [
-    { icon: <Avatar src={authState.avatar} alt={authState?.firstName} />, name: 'Profile', handleClick: setEditingProfile },
-    { icon: <AddIcon />, name: 'Add', handleClick: setPosting },
-    { icon: <SettingsIcon />, handleClick: setOpenSettings, name: 'Settings' },
+    { icon: <Avatar src={authState.avatar} alt={authState?.firstName} />, name: 'Profile', handleClick: () => setEditProfileDialog(true) },
+    { icon: <AddIcon />, name: 'Add', handleClick: () => setPostingJobDialog(true) },
+    { icon: <SettingsIcon />, handleClick: () => setOpenSettingsDialog(true), name: 'Settings' },
   ];
 
   const handleOpen = () => {

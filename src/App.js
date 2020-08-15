@@ -6,6 +6,7 @@ import AppRouter from './AppRouter';
 import { JobsProvider } from './contexts/Jobs';
 import { UsersProvider } from './contexts/Users';
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import { DialoguesProvider } from './contexts/Dialogues';
 
 const App = () => {
   return (
@@ -13,7 +14,9 @@ const App = () => {
         <AlertProvider>
           <JobsProvider>
             <UsersProvider>
-              <AppRouter />
+              <DialoguesProvider>
+                <AppRouter />
+              </DialoguesProvider>
             </UsersProvider>
           </JobsProvider>
         </AlertProvider>

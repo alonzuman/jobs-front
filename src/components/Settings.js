@@ -4,22 +4,25 @@ import { AuthContext } from '../contexts/Auth'
 import CloseIcon from '@material-ui/icons/Close'
 import Brightness4Icon from '@material-ui/icons/Brightness4';
 import { Redirect } from 'react-router-dom';
+import { DialoguesContext } from '../contexts/Dialogues';
 
 const Settings = () => {
-  const { logOut, theme, toggleTheme, openSettings, setOpenSettings } = useContext(AuthContext)
+  const { openSettings, setOpenSettingsDialog } = useContext(DialoguesContext)
+  const { logOut, theme, toggleTheme } = useContext(AuthContext)
+
   const handleSignOut = () => {
     logOut()
-    setOpenSettings(false)
+    setOpenSettingsDialog(false)
     return <Redirect to='/signin' />
   }
 
   return (
-    <Dialog open={openSettings} onClose={() => setOpenSettings(false)}>
+    <Dialog open={openSettings} onClose={() => setOpenSettingsDialog(false)}>
       <div className='header-style'>
         <DialogTitle className='title-style'>
           Settings
         </DialogTitle>
-        <IconButton onClick={() => setOpenSettings(false)}>
+        <IconButton onClick={() => setOpenSettingsDialog(false)}>
           <CloseIcon />
         </IconButton>
       </div>

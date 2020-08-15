@@ -5,13 +5,15 @@ import { Button, CircularProgress, Dialog, DialogTitle, IconButton } from '@mate
 import { editUser } from '../firebase'
 import { AlertContext } from '../contexts/Alert'
 import CloseIcon from '@material-ui/icons/Close';
+import { DialoguesContext } from '../contexts/Dialogues'
 
 const EditProfile = () => {
+  const { editingProfile, setEditProfileDialog } = useContext(DialoguesContext)
+  const { updateUser, authState, currentUser } = useContext(AuthContext)
+  const { uid } = currentUser
+  const { setAlert } = useContext(AlertContext)
   const [isUploading, setIsUploading] = useState(false)
   const [loading, setLoading] = useState(false)
-  const { updateUser, editingProfile, setEditingProfile, authState, currentUser } = useContext(AuthContext)
-  const { setAlert } = useContext(AlertContext)
-  const { uid } = currentUser
   const [firstName, setFirstName] = useState(authState?.firstName)
   const [lastName, setLastName] = useState(authState?.lastName)
   const [phone, setPhone] = useState(authState?.phone)
@@ -41,7 +43,7 @@ const EditProfile = () => {
         type: 'success'
       })
       setLoading(false)
-      setEditingProfile(false)
+      setEditProfileDialog(false)
     } catch (error) {
       console.log(error)
       setAlert({
@@ -53,12 +55,12 @@ const EditProfile = () => {
   }
 
   return (
-    <Dialog open={editingProfile} onClose={() => setEditingProfile(false)}>
+    <Dialog open={editingProfile} onClose={() => setEditProfileDialog(false)}>
       <div className='header-style'>
         <DialogTitle className='title-style'>
           Edit profile
         </DialogTitle>
-        <IconButton onClick={() => setEditingProfile(false)}>
+        <IconButton onClick={() => setEditProfileDialog(false)}>
           <CloseIcon />
         </IconButton>
       </div>

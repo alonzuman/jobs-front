@@ -7,8 +7,10 @@ import CircularProgressWithLabel from '../components/CircularProgressWithLabel';
 import { AlertContext } from '../contexts/Alert';
 import { AuthContext } from '../contexts/Auth';
 import { JobsContext } from '../contexts/Jobs';
+import { DialoguesContext } from '../contexts/Dialogues';
 
 const PostJob = () => {
+  const { postingJob, setPostingJobDialog } = useContext(DialoguesContext)
   const { posting, setPosting, addJobFunction } = useContext(JobsContext)
   const { setAlert } = useContext(AlertContext)
   const { currentUser } = useContext(AuthContext)
@@ -54,7 +56,7 @@ const PostJob = () => {
       setLocation('')
       setContact('')
       setRequirements([])
-      setPosting(false)
+      setPostingJobDialog(false)
     } catch (error) {
       console.log(error)
       setLoading(false)
@@ -67,10 +69,10 @@ const PostJob = () => {
   }
 
   return (
-    <Dialog open={posting} onClose={() => setPosting(false)}>
+    <Dialog open={postingJob} onClose={() => setPostingJobDialog(false)}>
       <div className='header-style'>
         <DialogTitle className='title-style'>Post a new job</DialogTitle>
-        <IconButton onClick={() => setPosting(false)}><CloseIcon /></IconButton>
+        <IconButton onClick={() => setPostingJobDialog(false)}><CloseIcon /></IconButton>
       </div>
       <form onSubmit={handleSubmit} className='form-container' noValidate>
         {isUploading && <CircularProgressWithLabel value={progress} />}
